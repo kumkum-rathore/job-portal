@@ -3,20 +3,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "@/lib/axios";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/redux/authSlice";
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/auth/login", form);
-      toast.success(res.data.message, {
-        description: `Welcome back, ${res.data.user.name}!`,
-      });
-
-      // (Optional) Save token for later
-      localStorage.setItem("token", res.data.token);
+      toast.success(res.data.message);
+      dispatch(setAuth({ token: res.data.token, user: res.data.user }));
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     }
@@ -28,7 +27,6 @@ function Login() {
       className="max-w-md mx-auto mt-10 p-4 border rounded-xl space-y-4"
     >
       <Input
-        type="email"
         placeholder="Email"
         onChange={(e) => setForm({ ...form, email: e.target.value })}
       />
