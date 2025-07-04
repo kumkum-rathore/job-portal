@@ -2,13 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
 
 dotenv.config();
 const app = express();
 connectDB();
 
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5174", // ✅ your frontend URL
+  credentials: true                // ✅ allow cookies/headers
+}));
 app.use(express.json());
+app.use("/api/auth",authRoutes)
 
 // Test Route
 app.get("/", (req, res) => {
