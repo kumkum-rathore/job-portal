@@ -11,15 +11,23 @@ function Login() {
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("/auth/login", form);
-      toast.success(res.data.message);
-      dispatch(setAuth({ token: res.data.token, user: res.data.user }));
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed");
-    }
-  };
+  e.preventDefault();
+  try {
+    const res = await axios.post("/auth/login", form);
+
+    toast.success(res.data.message);
+
+    //  Save token to localStorage
+    localStorage.setItem("token", res.data.token);
+
+    //  Save to Redux
+    dispatch(setAuth({ token: res.data.token, user: res.data.user }));
+
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Login failed");
+  }
+};
+
 
   return (
     <form

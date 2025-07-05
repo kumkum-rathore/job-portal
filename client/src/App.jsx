@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import { Toaster } from "sonner";
 import Dashboard from "./pages/Dashboard"; 
 import ProtectedRoute from "./components/ProtectedRoute";
+import AddJob from './pages/Addjob';
 
 
 function App() {
@@ -19,6 +20,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+       <Route
+        path="/add-job"
+        element={
+          <ProtectedRoute>
+            <AddJob />
           </ProtectedRoute>
         }
       />
